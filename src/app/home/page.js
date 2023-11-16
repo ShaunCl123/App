@@ -65,10 +65,8 @@ export default function Page() {
     console.log("Sent email:" + email)
     console.log("Sent pass:" + pass)
 
-let url = `http://localhost:3000/api/login?email=${email}&pass=${pass}`;
 
-console.log(url)
-    runDBCallAsync(url)
+    runDBCallAsync(`http://localhost:3000/api/login?email=${email}&pass=${pass}`)
 
 
 
@@ -149,12 +147,12 @@ console.log(url)
 
           <Grid container>
             <Grid item xs>
-              <Link href="/forgotpassword" variant="body2">
+              <Link href="#" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
+              <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

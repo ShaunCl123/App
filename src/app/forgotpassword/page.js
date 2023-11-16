@@ -34,12 +34,12 @@ export default function Page() {
 
  
     if(data.data== "valid"){
-      console.log("login is valid!")
+      console.log("New Password had been created")
 
       
     } else {
 
-      console.log("not valid  ")
+      console.log("Please type a new Password")
     }
   }
 
@@ -61,14 +61,13 @@ export default function Page() {
 
     let email = data.get('email')
 		let pass = data.get('pass')
+    
 
     console.log("Sent email:" + email)
     console.log("Sent pass:" + pass)
 
-let url = `http://localhost:3000/api/login?email=${email}&pass=${pass}`;
 
-console.log(url)
-    runDBCallAsync(url)
+    runDBCallAsync(`http://localhost:3000/api/login?email=${email}&pass=${pass}`)
 
 
 
@@ -108,7 +107,7 @@ console.log(url)
           
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Reset Password
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -125,11 +124,21 @@ console.log(url)
             margin="normal"
             required
             fullWidth
-            name="pass"
-            label="Password"
-            type="pass"
-            id="pass"
-            autoComplete="current-password"
+            name="newpass"
+            label="New Password"
+            type="newpass"
+            id="newpass"
+            autoComplete="new-password"
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="renewpass"
+            label="Retype New Password"
+            type="renewpass"
+            id="renewpass"
+            autoComplete="retype-new-password"
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -149,12 +158,12 @@ console.log(url)
 
           <Grid container>
             <Grid item xs>
-              <Link href="/forgotpassword" variant="body2">
+              <Link href="#" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
+              <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

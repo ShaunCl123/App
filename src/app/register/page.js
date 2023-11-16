@@ -34,12 +34,12 @@ export default function Page() {
 
  
     if(data.data== "valid"){
-      console.log("login is valid!")
+      console.log("User Registered")
 
       
     } else {
 
-      console.log("not valid  ")
+      console.log("User not Registered")
     }
   }
 
@@ -61,14 +61,16 @@ export default function Page() {
 
     let email = data.get('email')
 		let pass = data.get('pass')
+        let add = data.get('add')
+        let numb = data.get('numb')
 
     console.log("Sent email:" + email)
     console.log("Sent pass:" + pass)
+    console.log("Sent address:" + add)
+    console.log("Sent phone number:" + numb)
 
-let url = `http://localhost:3000/api/login?email=${email}&pass=${pass}`;
 
-console.log(url)
-    runDBCallAsync(url)
+    runDBCallAsync(`http://localhost:3000/api/register?email=${email}&pass=${pass}`)
 
 
 
@@ -108,7 +110,7 @@ console.log(url)
           
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          User Registration
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -120,6 +122,26 @@ console.log(url)
             name="email"
             autoComplete="email"
             autoFocus
+          />
+            <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="numb"
+            label="Phone Number"
+            type="numb"
+            id="numb"
+            autoComplete="current-phone-number"
+          />
+            <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="add"
+            label="Address"
+            type="text"
+            id="add"
+            autoComplete="current-address"
           />
           <TextField
             margin="normal"
@@ -149,12 +171,12 @@ console.log(url)
 
           <Grid container>
             <Grid item xs>
-              <Link href="/forgotpassword" variant="body2">
+              <Link href="#" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
+              <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
