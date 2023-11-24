@@ -22,14 +22,14 @@ export default function Page() {
   
     useEffect(() => {
       // Fetch product data
-      fetch('http://localhost:3000/api/getProducts')
+      fetch('api/getProducts')
         .then((res) => res.json())
         .then((data) => {
           setData(data);
         });
   
       // Fetch weather data
-      fetch('http://localhost:3000/api/getWeather')
+      fetch('api/getWeather')
         .then((res) => res.json())
         .then((weatherData) => {
           setWeatherData(weatherData);
