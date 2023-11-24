@@ -20,4 +20,4 @@ export async function GET(req, res) {
     const insertResult = await collection.insertOne(myobj);
     //==========================================================
     // at the end of the process we need to send something back.
-    r
+}
