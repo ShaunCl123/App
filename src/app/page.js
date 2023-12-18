@@ -41,7 +41,7 @@ export default function Page() {
  
     if(data.data== "valid"){
       console.log("login is valid!")
-
+    window.location="/dashboard"
       
     } else {
 
