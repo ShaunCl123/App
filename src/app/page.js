@@ -17,7 +17,13 @@ import {ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { green, purple } from '@mui/material/colors';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
+var validator = require("email-validator");
 export default function Page() {
 
 
@@ -43,37 +49,55 @@ export default function Page() {
     }
   }
 
+  const validateForm = (event) => {
+    let errorMessage = '';
+    const data = new FormData(event.currentTarget);
+    // get the email
+    let email = data.get('email')
+    // pull in the validator
+    var validator = require("email-validator");
+    // Validate the password
+let pass = data.get('pass')
+if(pass.length ==0){
+errorMessage += ' No password added, ';
+}
+    // run the validator
+    let emailCheck = validator.validate(email);
+    // print the status true or false
+    console.log("email status" +emailCheck);
+    // if it is false, add to the error message.
+    if(emailCheck == false){
+    errorMessage += 'Incorrect email';
+    }
+    return errorMessage;
+    }
 
   /*
 
   When the button is clicked, this is the event that is fired.
   The first thing we need to do is prevent the default refresh of the page.
   */
-	const handleSubmit = (event) => {
-		
-		console.log("handling submit");
-
-
+  const handleSubmit = (event) => {
+    console.log("handling submit");
     event.preventDefault();
-  
-		const data = new FormData(event.currentTarget);
-
-
+    // call out custom validator
+    let errorMessage = validateForm(event);
+    // save the mesage
+    setErrorHolder(errorMessage)
+    // if we have an error
+    if(errorMessage.length > 0){
+    setOpen(true);
+    } else {
+    // if we do not get an error
+    const data = new FormData(event.currentTarget);
     let email = data.get('email')
-		let pass = data.get('pass')
-
+    let pass = data.get('pass')
     console.log("Sent email:" + email)
     console.log("Sent pass:" + pass)
-
-let url = `http://localhost:3000/api/login?email=${email}&pass=${pass}`;
-
-console.log(url)
-    runDBCallAsync(url)
-
-
-
-
-  }; // end handler
+    console.log("calling db");
+    runDBCallAsync(`api/login?email=${email}&pass=${pass}`)
+    }// error message if
+    }; // end handler
 
 
 
@@ -89,11 +113,43 @@ console.log(url)
   });
   
 
+// first
+const [open, setOpen] = React.useState(false);
+const handleClickOpen = () => {
+setOpen(true);
+};
+const handleClose = () => {
+setOpen(false);
+};
+// second
+const [errorHolder, setErrorHolder] = React.useState(false);
 
 
   
   return (
     <ThemeProvider theme={theme}>
+      <React.Fragment>
+<Dialog
+open={open}
+onClose={handleClose}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+>
+<DialogTitle id="alert-dialog-title">
+{"Error"}
+</DialogTitle>
+<DialogContent>
+<DialogContentText id="alert-dialog-description">
+{errorHolder}
+</DialogContentText>
+</DialogContent>
+<DialogActions>
+<Button onClick={handleClose} autoFocus>
+Close
+</Button>
+</DialogActions>
+</Dialog>
+</React.Fragment>
     <Container component="main"  maxWidth="xs">
       <CssBaseline />
       <Box

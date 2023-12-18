@@ -14,61 +14,71 @@ import Container from '@mui/material/Container';
 import {ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { green, purple } from '@mui/material/colors';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 export default function Page() {
     const [data, setData] = useState(null);
     const [weather, setWeatherData] = useState(null);
-  
+
     useEffect(() => {
-      // Fetch product data
-      fetch('api/getProducts')
-        .then((res) => res.json())
-        .then((data) => {
-          setData(data);
-        });
-  
-      // Fetch weather data
-      fetch('api/getWeather')
-        .then((res) => res.json())
-        .then((weatherData) => {
-          setWeatherData(weatherData);
-        });
+        // Check login status
+        fetch('api/checkAuth')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data.status);
+                if (data.status !== 'true') {
+                    window.location = "/";
+                }
+            });
+
+        // Fetch product data
+        fetch('api/getProducts')
+            .then((res) => res.json())
+            .then((data) => {
+                setData(data);
+            });
+
+        // Fetch weather data
+        fetch('api/getWeather')
+            .then((res) => res.json())
+            .then((weatherData) => {
+                setWeatherData(weatherData);
+            });
     }, []);
-  
+
     if (!weather) return <p>No weather</p>;
-  
+
     const theme = createTheme({
-      palette: {
-        secondary: {
-          main: green[500],
+        palette: {
+            secondary: {
+                main: green[500],
+            },
         },
-      },
     });
-  
+
     return (
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-          <div style={{ fontSize: '40px' }}> Dashboard</div>
-          <div>
-            Today's temperature: {JSON.stringify(weather.temp)}
-            <br />
-  
-            {/* Your existing product display */}
-            {data &&
-              data.map((item, i) => (
-                <div style={{ padding: '20px' }} key={i}>
-                  Unique ID: {item._id}
-                  <br />
-                  {item.pname} - {item.price}
-                  <br />
-                  <Button onClick={() => putInCart(item.pname)} variant="outlined">
-                    Add to cart
-                  </Button>
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <div style={{ fontSize: '40px' }}> Dashboard</div>
+                <div>
+                    Today's temperature: {JSON.stringify(weather.temp)}
+                    <br />
+
+                    {/* Your existing product display */}
+                    {data &&
+                        data.map((item, i) => (
+                            <div style={{ padding: '20px' }} key={i}>
+                                Unique ID: {item._id}
+                                <br />
+                                {item.pname} - {item.price}
+                                <br />
+                                <Button onClick={() => putInCart(item.pname)} variant="outlined">
+                                    Add to cart
+                                </Button>
+                            </div>
+                        ))}
                 </div>
-              ))}
-          </div>
-        </Container>
-      </ThemeProvider>
+            </Container>
+        </ThemeProvider>
     );
-  }
+}
